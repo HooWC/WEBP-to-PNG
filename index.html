@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebP to PNG Converter</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="./favicon1.ico" rel="icon">
+    <style>
+        .item {
+            background-size: cover;
+            background-position: center;
+            background-image: url('placeholder-image.jpg');
+        }
+
+        .item img {
+            width: 80%;
+            height: 100%;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main>
+        <ul class='slider'>
+            <li class='item'
+                style="background-image: url('https://cdn.mos.cms.futurecdn.net/dP3N4qnEZ4tCTCLq59iysd.jpg')">
+                <div class='content'>
+                    <h2 class='title'>"Lossless Youths"</h2>
+                    <p class='description'> Lorem ipsum, dolor sit amet consectetur
+                        adipisicing elit. Tempore fuga voluptatum, iure corporis inventore
+                        praesentium nisi. Id laboriosam ipsam enim. </p>
+                    <button>Read More</button>
+                </div>
+            </li>
+            <li class='item' style="background-image: url('./BJ.png'); ">
+                <div class='content'>
+                    <h2 class='title'>"<span style="color:red">WebP</span> to <span
+                            style="color:rgb(24, 55, 252)">PNG</span>
+                        Converter"</h2>
+                    <p class='description'> This website allows converting WEBP images to PNG. Currently, it only
+                        converts PNG format. Please pay more attention to
+                        us and there will be more updates in the future. </p>
+                    <input type="file" id="fileInput" accept="image/webp">
+                    <div></div>
+                </div>
+            </li>
+            <li id="output" class='item' style="display: none;">
+                <img id="convertedImg" alt="Converted PNG Image">
+            </li>
+        </ul>
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/pica@5.0.0/dist/pica.min.js"></script>
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.onload = function () {
+                        convertAndDisplayImage(img);
+                    };
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        async function convertAndDisplayImage(img) {
+            let width = img.width;
+            let height = img.height;
+
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // Convert canvas to PNG data URL
+            const pngDataUrl = canvas.toDataURL('image/png', 1.0);
+
+            // Display PNG image using img tag
+            const outputImg = document.getElementById('convertedImg');
+            outputImg.src = pngDataUrl;
+
+            // Show the output li element
+            const outputLi = document.getElementById('output');
+            outputLi.style.display = 'block';
+        }
+    </script>
+
+</body>
+
+</html>
